@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+scales = File.readlines("scales.txt").map(&:strip)
+
+if ARGV.length < 2
+  puts "Usage: scales <scale number> <text>"
+  puts "  Available scales: "
+
+  scales.each_with_index do |scale, index|
+    puts "  #{index}) " + scale.split(";")[0]
+  end
+
+  exit
+end
+
+scale_num = ARGV[0].to_i
+text      = ARGV[1..-1].join("")
+notes     = scales[scale_num].split(";")[1].split(",")
+
+puts text.chars.map { |char|
+  ascii_start = "a".ord
+  ascii_char  = char.downcase.ord
+  notes[(ascii_char - ascii_start) % notes.length]
+}.join("   ")
+
